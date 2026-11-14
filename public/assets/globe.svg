@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="840" viewBox="0 0 840 840">
+<defs><radialGradient id="gl" cx="48%" cy="48%"><stop offset="0" stop-color="#1d2b32"/><stop offset=".65" stop-color="#111c23"/><stop offset="1" stop-color="#050b10"/></radialGradient><clipPath id="clip"><circle cx="420" cy="420" r="325"/></clipPath></defs>
+<circle cx="420" cy="420" r="365" fill="none" stroke="#a7bfba" stroke-opacity=".12"/><circle cx="420" cy="420" r="325" fill="url(#gl)" stroke="#a7bfba" stroke-opacity=".38" stroke-width="2"/>
+<g clip-path="url(#clip)" fill="none" stroke="#9aabb1" stroke-opacity=".24" stroke-width="1.4"><ellipse cx="420" cy="420" rx="95" ry="325"/><ellipse cx="420" cy="420" rx="230" ry="325"/><path d="M95 420h650M113 310h614M113 530h614M185 200h470M185 640h470"/><path d="M95 420a325 125 0 0 0 650 0M95 420a325 125 0 0 1 650 0M95 420a325 245 0 0 0 650 0M95 420a325 245 0 0 1 650 0"/></g>
+<g clip-path="url(#clip)" fill="#789693" fill-opacity=".48"><path d="M161 302l52-53 89-34 51 14 17 49-26 34-25 5-23 36-50 9-7 34-36 8-27-46-38-15zM314 370l51 35 6 54-23 44-20 51-31 56-31-28 2-56-29-66 16-56zM429 260l69-40 89 8 44-31 107 48 12 50-66 28-32 45-59-18-40 32-38-23 12-42-40-20-19 23-38-15zM501 383l55 8 26 44-18 73-48 91-39 44-26-46 14-65-21-50 23-55zM640 585l84-18 42 37-35 38-62-8z"/></g>
+<circle cx="420" cy="420" r="325" fill="none" stroke="#e23b3b" stroke-opacity=".75" stroke-width="2" stroke-dasharray="6 12"/>
+<path d="M420 95v65M420 680v65M95 420h65M680 420h65" stroke="#ef4646" stroke-width="2"/>
+<g fill="#ff5656"><circle cx="585" cy="343" r="7"/><circle cx="265" cy="418" r="6"/><circle cx="512" cy="542" r="5"/></g>
+<g stroke="#ff5656" stroke-opacity=".48" fill="none"><circle cx="585" cy="343" r="21"/><circle cx="585" cy="343" r="36"/><circle cx="265" cy="418" r="22"/><circle cx="512" cy="542" r="20"/></g>
+</svg>

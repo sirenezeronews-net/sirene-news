@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a1015"><meta name="description" content="SIRENE ZERO — Geopolítica, conflitos e as linhas de fratura do planeta. Jornalismo com contexto em um mundo em alerta.">
+  <title>SIRENE ZERO — O mundo não espera.</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css">
+  <script src="/site.js" defer></script>
+</head>
+<body class="public-body">
+  <div class="topline"><div class="container flex-space"><span><b class="red-dot"></b> CENTRO DE MONITORAMENTO GLOBAL <span class="muted">/ EDIÇÃO EXPERIMENTAL</span></span><span class="topline-right">INDEPENDÊNCIA • CONTEXTO • VERIFICAÇÃO <span id="utc-clock">UTC —:—</span></span></div></div>
+  <header class="main-header"><div class="container header-content">
+    <a href="/" class="brand" aria-label="Sirene Zero, página inicial"><span class="brand-icon"><i></i><i></i><i></i></span><span>SIRENE<span class="brand-accent">ZERO</span><small>GEOPOLÍTICA EM ESTADO DE ALERTA</small></span></a>
+    <nav class="desktop-nav" aria-label="Editorias"><a href="#radar" data-filter="TODAS">ÚLTIMAS</a><a href="#radar" data-filter="CONFLITOS">CONFLITOS</a><a href="#radar" data-filter="DEFESA">DEFESA</a><a href="#radar" data-filter="ECONOMIA">ECONOMIA</a><a href="#radar" data-filter="ESTRATÉGIA">ESTRATÉGIA</a></nav>
+    <div class="header-actions"><button type="button" class="icon-btn" id="search-toggle" aria-label="Abrir busca">⌕</button><a href="/estudio" class="outline-button studio-link">ESTÚDIO <span>↗</span></a></div>
+  </div><div class="container search-wrapper" id="search-wrapper" hidden><input id="site-search" type="search" placeholder="Pesquisar análises e notícias..." aria-label="Pesquisar matérias"></div></header>
+  <div class="ticker-wrap"><div class="ticker-label"><span class="pulse-dot"></span> RADAR / 00</div><div class="ticker-text">AMOSTRA EDITORIAL <span class="ticker-sep">✳</span> MATÉRIAS ILUSTRATIVAS, NÃO NOTÍCIAS DE ÚLTIMA HORA <span class="ticker-sep">✳</span> FATOS DEVEM SER VERIFICADOS ANTES DA PUBLICAÇÃO <span class="ticker-sep">✳</span> SIRENE ZERO / INTELIGÊNCIA DE CONTEXTO</div><span class="ticker-end">● REC</span></div>
+  <main>
+    <section class="hero-area container"><div class="hero-main">
+      <div class="hero-text"><div class="tagline"><span class="tagline-stripe"></span> CENÁRIOS DO PODER GLOBAL <span class="tagline-number">// DOSSIÊ 001</span></div>
+      <h1>O MUNDO ESTÁ <em>EM ESTADO</em> DE ALERTA<span class="period">.</span></h1>
+      <p class="hero-intro">O que move as potências, redesenha fronteiras e ameaça o equilíbrio mundial. Sem ruído. Com contexto.</p>
+      <div class="hero-cta"><button class="red-button" id="hero-read">EXPLORAR O DOSSIÊ <span>↗</span></button><span class="hero-caption">CONFLITOS • PODER • ESTRATÉGIA</span></div>
+    </div><div class="hero-art" role="img" aria-label="Globo estilizado com pontos de monitoramento"><img src="/assets/globe.svg" alt="" class="globe-img"><div class="map-coordinate coord-one">36°N / 115°E <b>●</b></div><div class="map-coordinate coord-two">SCAN 002 / ACTIVE</div><div class="map-cross">+</div><span class="hero-vertical">WORLD SITUATION ROOM / 2026</span></div>
+    <div class="hero-bottom"><span>DESDE O PRIMEIRO SINAL.</span><span>NOTÍCIAS QUE EXIGEM CONTEXTO <b>↗</b></span></div></div>
+    <aside class="hero-sidebar"><div class="sidebar-heading"><span class="section-overline">PAINEL / 01</span><span class="bracket">[ EM FOCO ]</span></div><h2>AS LINHAS DE<br><em>FRATURA</em></h2><p>Quatro frentes para entender o tabuleiro internacional.</p><div class="region-list">
+      <div><span class="number">01</span><div><b>ÁSIA-PACÍFICO</b><small>Rivalidade estratégica e comércio</small></div><span class="point">↗</span></div>
+      <div><span class="number">02</span><div><b>EUROPA</b><small>Segurança e alianças militares</small></div><span class="point">↗</span></div>
+      <div><span class="number">03</span><div><b>ORIENTE MÉDIO</b><small>Energia, diplomacia e conflitos</small></div><span class="point">↗</span></div>
+      <div><span class="number">04</span><div><b>ÁRTICO</b><small>Novas rotas e influência global</small></div><span class="point">↗</span></div>
+    </div><div class="sidebar-bottom"><span class="red-dot"></span> MONITORAMENTO DE CONTEXTO</div></aside></section>
+
+    <section class="container newsroom" id="radar"><div class="section-header"><div><div class="section-overline">SINAL ABERTO / CONTEÚDO EDITORIAL</div><h2>RADAR <span>GLOBAL</span><span class="section-slash">//</span></h2></div><span class="section-note">DOS FATOS AO SIGNIFICADO.<br>VISÃO ALÉM DA MANCHETE.</span></div>
+      <div class="filters" id="filter-buttons" role="group" aria-label="Filtrar editorias"><button class="active" data-category="TODAS">TODAS</button><button data-category="CONFLITOS">CONFLITOS</button><button data-category="DEFESA">DEFESA</button><button data-category="ESTRATÉGIA">ESTRATÉGIA</button><button data-category="ECONOMIA">ECONOMIA</button><button data-category="INTELIGÊNCIA">INTELIGÊNCIA</button></div>
+      <div class="news-grid" id="news-grid"><div class="loading-news">CARREGANDO O RADAR...</div></div>
+      <div class="no-results" id="no-results" hidden>Nenhuma matéria encontrada para este filtro.</div>
+    </section>
+
+    <section class="manifesto"><div class="container manifesto-inner"><span class="manifesto-mark">SZ<span>◉</span></span><div><div class="section-overline">NOSSA POSIÇÃO EDITORIAL</div><h2>URGÊNCIA NÃO É<br><em>SINÔNIMO DE PÂNICO.</em></h2><p>Acompanhamos crises com atenção máxima e compromisso com a verificação. Distinguimos informação confirmada, projeção, opinião e hipótese.</p></div><div class="manifesto-corner">ALERTA SEM ALARMISMO<br>ANÁLISE SEM RUIDO<br>CONTEXTO SEM FRONTEIRAS</div></div></section>
+    <section class="container final-strip"><div><span class="section-overline">SINAL ZERO / SOBRE O PROJETO</span><h2>O mundo não espera.<br><strong>Nós também não.</strong></h2></div><p>Um projeto editorial com linguagem de emergência para explicar geopolítica sem transformar especulações em fatos. Esta edição contém matérias de demonstração.</p><a class="outline-button" href="/estudio">ABRIR ESTÚDIO ↗</a></section>
+  </main>
+  <footer class="site-footer"><div class="container footer-grid"><div><div class="footer-brand">SIRENE<span>ZERO</span><sup>®</sup></div><p>GEOPOLÍTICA EM ESTADO DE ALERTA</p></div><div class="footer-links"><a href="#radar">RADAR GLOBAL</a><a href="#politica">POLÍTICA EDITORIAL</a><a href="/estudio">ESTÚDIO</a></div><div class="footer-legal">© 2026 SIRENE ZERO<br>PROTÓTIPO • CONTEÚDO DEMONSTRATIVO</div></div><div id="politica" class="container footer-disclaimer">Transparência: os textos de exemplo não representam notícias apuradas. Antes de qualquer lançamento público, substitua-os por reportagens verificadas e identifique corretamente autores, fontes e correções.</div></footer>
+  <dialog id="article-modal" class="article-modal"><div class="article-modal-content"><button class="modal-close" id="modal-close" aria-label="Fechar matéria">✕</button><div id="article-detail"></div></div></dialog>
+</body></html>
