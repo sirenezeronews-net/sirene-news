@@ -13,6 +13,8 @@ const PORT = Number(process.env.PORT || 3000);
 const ROOT = __dirname;
 const STORAGE_DIR = path.resolve(process.env.STORAGE_DIR || path.join(ROOT, 'storage'));
 const DATA_FILE = path.join(STORAGE_DIR, 'articles.json');
+const LIVE_FILE = path.join(STORAGE_DIR, 'live.json');
+const SEED_LIVE_FILE = path.join(ROOT, 'data', 'live.json');
 const MEDIA_DIR = path.join(STORAGE_DIR, 'media');
 const SEED_DATA_FILE = path.join(ROOT, 'data', 'articles.json');
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
@@ -35,13 +37,15 @@ app.use(helmet({ contentSecurityPolicy: {
     styleSrc: ["'self'"],
     scriptSrc: ["'self'"],
     imgSrc: ["'self'", 'data:'],
-    connectSrc: ["'self'"],
+    connectSrc: ["'self'", 'https:'],
+    frameSrc: ["'self'", 'https://www.youtube.com', 'https://www.youtube-nocookie.com'],
+    mediaSrc: ["'self'", 'https:', 'blob:'],
     objectSrc: ["'none'"],
     baseUri: ["'self'"],
     frameAncestors: ["'none'"],
     upgradeInsecureRequests: IS_PRODUCTION ? [] : null
   }
-}}));
+}, referrerPolicy: { policy: 'strict-origin-when-cross-origin' } }));
 app.use(express.json({ limit: '750kb' }));
 app.use(cookieParser());
 app.use('/assets', express.static(path.join(ROOT, 'public/assets'), { maxAge: '1d' }));
@@ -85,6 +89,14 @@ async function prepareStorage() {
   // Never replace stored articles during updates or restarts.
   try { await fs.copyFile(SEED_DATA_FILE, DATA_FILE, require('node:fs').constants.COPYFILE_EXCL); }
   catch (e) { if (e.code !== 'EEXIST') throw e; }
+  try { await fs.copyFile(SEED_LIVE_FILE, LIVE_FILE, require('node:fs').constants.COPYFILE_EXCL); }
+  catch (e) { if (e.code !== 'EEXIST') throw e; }
+}
+async function loadLive() { return JSON.parse(await fs.readFile(LIVE_FILE, 'utf8')); }
+async function saveLive(value) {
+  const tmp = LIVE_FILE + '.' + crypto.randomBytes(6).toString('hex') + '.tmp';
+  await fs.writeFile(tmp, JSON.stringify(value, null, 2) + '\n', 'utf8');
+  await fs.rename(tmp, LIVE_FILE);
 }
 async function loadArticles() { return JSON.parse(await fs.readFile(DATA_FILE, 'utf8')); }
 async function saveArticles(articles) {
@@ -249,6 +261,106 @@ app.post('/api/admin/instagram/finish', requireAdmin, publishLimiter, async (req
   } catch (e) { console.error('instagram finish:', safeError(e)); res.status(502).json({ error: safeError(e) }); }
 });
 
+
+// VIDEO / RÁDIO / REDES SOCIAIS: uma única configuração editorial persistente.
+function safeHttps(value, allowEmpty = true) {
+  const text = String(value || '').trim().slice(0, 800);
+  if (!text && allowEmpty) return '';
+  let u;
+  try { u = new URL(text); } catch { throw new Error('Use uma URL HTTPS válida.'); }
+  if (u.protocol !== 'https:' || !u.hostname || u.username || u.password) throw new Error('Use uma URL HTTPS válida e sem credenciais.');
+  return u.toString();
+}
+function youtubeId(input) {
+  if (!input) return '';
+  const url = new URL(safeHttps(input));
+  const host = url.hostname.toLowerCase();
+  let id = '';
+  if (host === 'youtu.be') id = url.pathname.slice(1).split('/')[0];
+  else if (['youtube.com','www.youtube.com','m.youtube.com','www.youtube-nocookie.com'].includes(host)) {
+    if (url.pathname === '/watch') id = url.searchParams.get('v') || '';
+    else if (/^\/(embed|live|shorts)\//.test(url.pathname)) id = url.pathname.split('/')[2] || '';
+  }
+  if (!/^[a-zA-Z0-9_-]{11}$/.test(id)) throw new Error('Insira o link de um vídeo/transmissão do YouTube (não apenas do canal).');
+  return id;
+}
+function cleanedLiveConfig(body, original) {
+  const b = body.broadcast || {};
+  const r = body.radio || {};
+  const social = body.social || {};
+  const videoUrl = safeHttps(b.youtubeUrl);
+  if (videoUrl) youtubeId(videoUrl);
+  const status = ['standby','live','replay'].includes(b.status) ? b.status : 'standby';
+  if (status !== 'standby' && !videoUrl) throw new Error('Adicione o vídeo do YouTube antes de ativar a transmissão.');
+  const streamUrl = safeHttps(r.streamUrl);
+  const apiUrl = safeHttps(r.nowPlayingApiUrl);
+  const rawSchedule = String(r.schedule || '').trim();
+  const schedule = rawSchedule ? rawSchedule.split(/\r?\n/).filter(Boolean).map(line => {
+    const match = line.match(/^\s*([01]\d|2[0-3]):([0-5]\d)\s*\|\s*(.{3,100})\s*$/);
+    if (!match) throw new Error('Grade inválida. Use HH:MM | Nome da atração em cada linha.');
+    return {time:match[1]+':'+match[2],title:match[3].trim()};
+  }).sort((a,b)=>a.time.localeCompare(b.time)) : [];
+  if (schedule.length > 35) throw new Error('A grade aceita até 35 atrações diárias.');
+  if (r.enabled && !streamUrl) throw new Error('Informe o link HTTPS do stream da rádio antes de ativar.');
+  return {
+    broadcast: {
+      title: String(b.title || '').trim().slice(0,160),
+      summary: String(b.summary || '').trim().slice(0,360),
+      sourceName: String(b.sourceName || '').trim().slice(0,100),
+      sourceUrl: safeHttps(b.sourceUrl), youtubeUrl: videoUrl, status,
+      updatedAt: new Date().toISOString()
+    },
+    updates: original.updates,
+    radio: {
+      name: String(r.name || 'RÁDIO ZERO').trim().slice(0,70),
+      tagline: String(r.tagline || '').trim().slice(0,90),
+      enabled: Boolean(r.enabled), streamUrl, nowPlayingApiUrl: apiUrl,
+      currentShow: String(r.currentShow || '').trim().slice(0,100),
+      nowPlaying: String(r.nowPlaying || '').trim().slice(0,160),
+      nextShow: String(r.nextShow || '').trim().slice(0,100),
+      nextShowTime: /^([01]\d|2[0-3]):[0-5]\d$/.test(r.nextShowTime) ? r.nextShowTime : '--:--', schedule
+    },
+    social: Object.fromEntries(['instagram','youtube','x','facebook','whatsapp'].map(k => [k, safeHttps(social[k])]))
+  };
+}
+app.get('/api/live', async (_req,res) => {
+  try { res.json(await loadLive()); }
+  catch { res.status(500).json({error:'Erro ao carregar o sinal.'}); }
+});
+app.put('/api/admin/live', requireAdmin, async (req,res) => {
+  try {
+    const old = await loadLive();
+    const config = cleanedLiveConfig(req.body,old);
+    if (config.broadcast.title.length < 10 || config.broadcast.summary.length < 20)
+      return res.status(400).json({error:'Informe título e linha fina da cobertura.'});
+    await saveLive(config); res.json(config);
+  } catch(e) { res.status(400).json({error:safeError(e)}); }
+});
+app.post('/api/admin/live/updates', requireAdmin, async (req,res) => {
+  try {
+    const headline = String(req.body?.headline || '').trim().slice(0,160);
+    const body = String(req.body?.body || '').trim().slice(0,2500);
+    const source = String(req.body?.source || '').trim().slice(0,500);
+    if (headline.length < 5 || body.length < 20 || source.length < 8)
+      return res.status(400).json({error:'Informe título, atualização e fonte verificável.'});
+    const data = await loadLive();
+    const update = {id:crypto.randomUUID(),headline,body,source,createdAt:new Date().toISOString(),demo:false};
+    data.updates.unshift(update);
+    data.updates = data.updates.slice(0,150);
+    await saveLive(data); res.status(201).json(update);
+  } catch(e) { res.status(400).json({error:safeError(e)}); }
+});
+app.delete('/api/admin/live/updates/:id', requireAdmin, async (req,res) => {
+  try {
+    const data = await loadLive();
+    const size = data.updates.length;
+    data.updates = data.updates.filter(u=>u.id !== req.params.id);
+    if (size === data.updates.length) return res.status(404).json({error:'Atualização não encontrada.'});
+    await saveLive(data); res.json({ok:true});
+  } catch(e) { res.status(500).json({error:safeError(e)}); }
+});
+
+app.get('/ao-vivo', (_req, res) => res.sendFile(path.join(ROOT, 'public', 'index.html')));
 app.get('/estudio', (_req, res) => res.sendFile(path.join(ROOT, 'public', 'estudio.html')));
 app.get('/estudio/', (_req, res) => res.sendFile(path.join(ROOT, 'public', 'estudio.html')));
 app.get('/', (_req, res) => res.sendFile(path.join(ROOT, 'public', 'index.html')));

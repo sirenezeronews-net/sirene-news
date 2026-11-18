@@ -85,3 +85,12 @@ O nome foi criado para este protótipo, mas **não equivale a uma verificação 
 ## Publicação no Render
 
 Veja o guia **DEPLOY_RENDER.md** com todas as instruções para o Render Starter e o disco persistente. A versão gratuita não é segura para notícias diárias com o armazenamento atual.
+
+
+## Novidades da versão 2.0
+
+A home inclui **SINAL AO VIVO** (YouTube + título/linha fina), página de cobertura em `/ao-vivo` com atualizações e fontes, relógios de Brasília/UTC, links sociais e player **RÁDIO ZERO**. No `/estudio`, abra **AO VIVO & RÁDIO** para editar o conteúdo, configurar streaming HTTPS, horário de programas e perfis sociais.
+
+Leia **NOVIDADES_V2.md** para instruções, especialmente sobre hospedagem separada de web rádio, programação AutoDJ, direitos de música, incorporação de YouTube e status de transmissão.
+
+Os arquivos `articles.json` e `live.json` são persistidos na mesma pasta `STORAGE_DIR`, compatível com o disco do Render. O status "ao vivo" do vídeo é definido pelo editor e deve ser checado manualmente.

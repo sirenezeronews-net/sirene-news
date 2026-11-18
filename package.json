@@ -1,8 +1,8 @@
 {
   "name": "sirene-zero",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Portal de geopolitica com estudio editorial e publicacao no Instagram",
+  "description": "Portal geopolítico com YouTube ao vivo, rádio digital, redes sociais e estúdio Instagram",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",

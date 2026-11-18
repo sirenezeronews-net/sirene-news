@@ -79,3 +79,10 @@ Documentação oficial: https://developers.facebook.com/docs/instagram-platform/
 ## Limites de assistência
 
 Esta entrega **não registra domínio, não cria contas, não paga hospedagem e não publica no Instagram** sem uma conta Meta autorizada. O processo de hospedagem e a publicação do Instagram ainda precisam ser testados em ambiente real.
+
+
+## Versão 2.0 — TV e rádio
+
+**Não é necessário adicionar outra variável de ambiente para o SINAL AO VIVO.** O painel salvará os ajustes em `<STORAGE_DIR>/live.json` (no mesmo disco usado para as matérias). Verifique que o disco persiste entre implantações e que o diretório tem permissão de gravação.
+
+Para configurar o áudio 24h, use um provedor de rádio separado (AzuraCast/AutoDJ ou equivalente) com link público HTTPS. O custo dessa infraestrutura é **adicional** à hospedagem do site; uma instância básica do Render não é uma estação de streaming permanente. Adicione os links da transmissão e de metadados pela interface do Estúdio. Veja `NOVIDADES_V2.md`.

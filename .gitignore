@@ -1,0 +1,10 @@
+node_modules/
+.env
+public/media/*.jpg
+public/media/*.jpeg
+public/media/*.png
+!public/media/.gitkeep
+data/session.json
+.DS_Store
+
+storage/
